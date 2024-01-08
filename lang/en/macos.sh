@@ -1,6 +1,6 @@
 chmod +x lang/en/macos.sh
 
-echo "I procede to install brew and spotify"
+echo "I procede to install Spotify"
 sleep 1.5
 wait
 clear
