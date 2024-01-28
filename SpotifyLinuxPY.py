@@ -1,6 +1,16 @@
 import os
 import subprocess
 import platform
+import sys
+
+def run_script(script_path):
+    try:
+        subprocess.run(['python', script_path], check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"Error executing script: {script_path}\nError: {e}")
+
+def get_user_choice(options):
+    return input(options).strip().lower()
 
 # Set paths
 base_folder = 'lang'
@@ -12,20 +22,19 @@ script_bash_it = os.path.join(it_folder, 'macos.sh')
 
 # Check macOS
 if platform.system() == "Darwin":
-    lang_mac = input("Running on macOS, what language do you want to use?\n1. English\n2. Italian\n")
-    selected_script = script_bash_en if lang_mac == "1" else script_bash_it if lang_mac == "2" else None
+    lang_mac = get_user_choice("Running on macOS, what language do you want to use?\n1. English\n2. Italian\n")
 
-    if selected_script:
-        subprocess.run(['bash', selected_script], check=True)
+    if lang_mac in {"1", "2"}:
+        run_script(script_bash_en if lang_mac == "1" else script_bash_it)
     else:
-        print("Not a valid choice")
-    exit()
+        print("Invalid choice")
+        sys.exit()
 
 # Ask language for non-macOS platforms
-lang = input("Which language do you prefer?\n1. English\n2. Italian\n")
+lang = get_user_choice("Which language do you prefer?\n1. English\n2. Italian\n")
 selected_script = os.path.join(en_folder, script_name) if lang == "1" else os.path.join(it_folder, script_name) if lang == "2" else None
 
 if selected_script:
-    subprocess.run(['python', selected_script])
+    run_script(selected_script)
 else:
-    print("Not a valid choice")
+    print("Invalid choice")

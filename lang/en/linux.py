@@ -10,11 +10,11 @@ package_names = ['git', 'zip', 'unzip', 'flatpak']
 package_names_gentoo = ['dev-vcs/git', 'app-arch/unzip', 'app-arch/zip', 'flatpak']
 package_names_nixos = ['nixpkgs.git', 'nixpkgs.unzip', 'nixpkgs.zip', 'nixpkgs.flatpak']
 
-#link
-command = "bash <(curl -sSL https://spotx-official.github.io/run.sh) -cd"
+# SpotX installation command
+spotx_command = "bash <(curl -sSL https://spotx-official.github.io/run.sh) -cd"
 
 # Check distro
-print("I'll check what distro you're using")
+print("Checking your Linux distribution...")
 time.sleep(1.5)
 os.system('clear')
 
@@ -46,12 +46,12 @@ def install_packages(package_manager, package_names):
         subprocess.run(['sudo', package_manager, '--yes'] + package_names, check=True)
         print(f"The packages {', '.join(package_names)} have been installed successfully.")
         clear_screen()
-        print("I will proceed to install Spotify")
+        print("Proceeding to install Spotify...")
         time.sleep(1.5)
     except subprocess.CalledProcessError as e:
         print(f"Error during package installation: {e}")
 
-#install spotify 
+# Install Spotify Flatpak package
 def install_flatpak_package(application_id):
     # Create a Flatpak installation reference
     installation = flatpak.Installation(system=True)
@@ -66,9 +66,9 @@ def install_flatpak_package(application_id):
 
 os.system('clear')
 try:
-    subprocess.run(command, shell=True, check=True)
+    subprocess.run(spotx_command, shell=True, check=True)
 except subprocess.CalledProcessError as e:
-    print(f"Error executing the command: {e}")
+    print(f"Error executing the SpotX command: {e}")
 
 install_flatpak_package("com.spotify.Client")
 # Call functions with package lists

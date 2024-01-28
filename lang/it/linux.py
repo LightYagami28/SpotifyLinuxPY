@@ -10,11 +10,11 @@ package_names = ['git', 'zip', 'unzip', 'flatpak']
 package_names_gentoo = ['dev-vcs/git', 'app-arch/unzip', 'app-arch/zip', 'flatpak']
 package_names_nixos = ['nixpkgs.git', 'nixpkgs.unzip', 'nixpkgs.zip', 'nixpkgs.flatpak']
 
-#link
+# Link
 command = "bash <(curl -sSL https://spotx-official.github.io/run.sh) -cd"
 
 # Check distro
-print("Procedo a controllare che distro stai usando")
+print("Checking your Linux distribution...")
 time.sleep(1.5)
 os.system('clear')
 
@@ -31,44 +31,44 @@ def is_wifi_active():
             result = subprocess.run(['nmcli', 'radio', 'wifi'], capture_output=True, text=True, check=True)
             return result.stdout.strip() == 'enabled'
         except subprocess.CalledProcessError as e:
-            print(f"Errore nel controllare il wifi: {e}")
+            print(f"Error checking Wi-Fi status: {e}")
             return False
     else:
-        print("Il controllo del wifi è supportato solo su linux.")
+        print("Checking Wi-Fi status is only supported on Linux.")
 
 if not is_wifi_active():
-    print("Il Wifi non è attivo. Assicurati il wifi sia collegato e funzionante, poi riprova.")
+    print("Wi-Fi is not active. Make sure Wi-Fi is enabled and try again.")
     sys.exit(1)  # Exit the script with exit code 1 (error)
 
 # Logic to check distro with package manager
 def install_packages(package_manager, package_names):
     try:
         subprocess.run(['sudo', package_manager, '--yes'] + package_names, check=True)
-        print(f"I pacchetti {', '.join(package_names)} sono stati installati con successo.")
+        print(f"The packages {', '.join(package_names)} have been installed successfully.")
         clear_screen()
-        print("Procedo a installare Spotify")
+        print("I will proceed to install Spotify.")
         time.sleep(1.5)
     except subprocess.CalledProcessError as e:
-        print(f"Errore durante l'installazione dei pacchetti: {e}")
+        print(f"Error during package installation: {e}")
 
-#install spotify 
+# Install Spotify 
 def install_flatpak_package(application_id):
     # Create a Flatpak installation reference
     installation = flatpak.Installation(system=True)
 
     # Check if the package is already installed
     if installation.exists(application_id):
-        print(f"Questo pacchetto di flatpak '{application_id}' è già installato.")
+        print(f"The Flatpak package '{application_id}' is already installed.")
     else:
         # Install the Flatpak package
         installation.install_user(application_id)
-        print(f"Il pacchetto '{application_id}' è stato con successo installato.")
+        print(f"The Flatpak package '{application_id}' has been successfully installed.")
 
 os.system('clear')
 try:
     subprocess.run(command, shell=True, check=True)
 except subprocess.CalledProcessError as e:
-    print(f"Errore nel eseguire il comando: {e}")
+    print(f"Error executing the command: {e}")
 
 install_flatpak_package("com.spotify.Client")
 # Call functions with package lists
